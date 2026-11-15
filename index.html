@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Argus — Self-hosted observability for Kubernetes</title>
+  <meta name="description" content="Argus collects metrics, logs and traces from every Kubernetes cluster with OpenTelemetry, stores them in ClickHouse, and shows one cluster at a time, clearly.">
+  <meta name="theme-color" content="#0b0d10">
+  <link rel="icon" type="image/svg+xml" href="assets/argus-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="nav" id="top">
+    <div class="nav-inner">
+      <a href="#top" class="brand" aria-label="Argus home">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3.2"/></svg>
+        Argus
+      </a>
+      <nav aria-label="Sections">
+        <a href="#pipeline">How it works</a>
+        <a href="#signals">Signals</a>
+        <a href="#alerts">Alerts</a>
+        <a href="#clusters">Clusters</a>
+        <a href="#deploy" class="nav-cta">Deploy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ 1. HERO: the product screen rises into view ============ -->
+    <section class="stage stage-hero" data-stage aria-labelledby="hero-title">
+      <div class="sticky">
+        <div class="hero-copy">
+          <p class="eyebrow">Self-hosted observability for Kubernetes</p>
+          <h1 id="hero-title">Every cluster.<br>One clear view.</h1>
+          <p class="lede">Argus collects metrics, logs and traces with OpenTelemetry, keeps them in ClickHouse on your own infrastructure, and shows you one cluster at a time.</p>
+        </div>
+
+        <div class="device" aria-hidden="true">
+          <div class="screen">
+            <div class="app">
+              <aside class="app-side">
+                <div class="app-logo"><svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3.2"/></svg>Argus</div>
+                <div class="app-select">prod-eu-west<span>▾</span></div>
+                <ul>
+                  <li class="on">Overview</li><li>Explore</li><li>Metrics</li><li>Logs</li>
+                  <li>Clusters</li><li>Uptime</li><li>Traces</li><li>Pods</li><li>Alerts</li>
+                </ul>
+              </aside>
+              <div class="app-main">
+                <div class="app-head"><div><b>Overview</b><small>Cluster prod-eu-west</small></div><span class="app-btn">Refresh</span></div>
+                <div class="tiles">
+                  <div class="tile"><small>Nodes</small><b>12</b><i>In prod-eu-west</i></div>
+                  <div class="tile"><small><em class="dot ok"></em>Reporting</small><b>12</b><i>100% of nodes</i></div>
+                  <div class="tile"><small>Stale</small><b>0</b><i>None</i></div>
+                  <div class="tile"><small><em class="dot warn"></em>Open alerts</small><b class="warn-t">1</b><i>1 warning</i></div>
+                </div>
+                <div class="panel chart-panel">
+                  <div class="panel-h">CPU utilisation · all nodes</div>
+                  <svg class="chart" viewBox="0 0 600 160" preserveAspectRatio="none">
+                    <g class="grid"><line x1="0" y1="40" x2="600" y2="40"/><line x1="0" y1="80" x2="600" y2="80"/><line x1="0" y1="120" x2="600" y2="120"/></g>
+                    <path class="area" d="M0,118 L40,110 L80,114 L120,96 L160,100 L200,84 L240,90 L280,70 L320,78 L360,62 L400,74 L440,58 L480,66 L520,50 L560,60 L600,46 L600,160 L0,160 Z"/>
+                    <path class="line" pathLength="1" d="M0,118 L40,110 L80,114 L120,96 L160,100 L200,84 L240,90 L280,70 L320,78 L360,62 L400,74 L440,58 L480,66 L520,50 L560,60 L600,46"/>
+                  </svg>
+                </div>
+                <div class="panel rows">
+                  <div class="panel-h">Recent node check-ins</div>
+                  <div class="row"><span>ip-10-0-1-24</span><span class="ok-t">● Healthy</span></div>
+                  <div class="row"><span>ip-10-0-2-11</span><span class="ok-t">● Healthy</span></div>
+                  <div class="row"><span>ip-10-0-3-07</span><span class="ok-t">● Healthy</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="scroll-hint" aria-hidden="true">Scroll</p>
+      </div>
+    </section>
+
+    <!-- ============ 2. STATEMENT ============ -->
+    <section class="statement">
+      <p class="reveal">Most monitoring tools show you everything at once.
+        <span class="dim">Argus shows you the cluster you're responsible for, and nothing that isn't.</span></p>
+    </section>
+
+    <!-- ============ 3. PIPELINE: pinned, three steps ============ -->
+    <section class="stage stage-pipeline" id="pipeline" data-stage data-steps="3" aria-labelledby="pipeline-title">
+      <div class="sticky">
+        <div class="split">
+          <div class="steps">
+            <h2 id="pipeline-title" class="section-title">One pipeline,<br>node to answer.</h2>
+            <ol>
+              <li data-step="0"><b>Collect</b><span>An OpenTelemetry Collector runs on every node as a DaemonSet and reads kubelet, node and pod metrics, plus Kubernetes events.</span></li>
+              <li data-step="1"><b>Ingest</b><span>Each cluster sends OTLP to Argus. Clusters and nodes register themselves from the <code>k8s.cluster.name</code> attribute. No manual inventory.</span></li>
+              <li data-step="2"><b>Store and query</b><span>Everything lands in ClickHouse with 1-minute and 1-hour rollups, so a week of data answers as fast as the last five minutes.</span></li>
+            </ol>
+          </div>
+
+          <div class="diagram" aria-hidden="true">
+            <svg viewBox="0 0 420 460">
+              <path class="wire" id="w1" d="M210 92 V170"/>
+              <path class="wire" id="w2" d="M210 238 V316"/>
+              <circle class="packet p1" r="4"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#w1"/></animateMotion></circle>
+              <circle class="packet p2" r="4"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#w2"/></animateMotion></circle>
+
+              <g class="node n0">
+                <rect x="40" y="24" width="340" height="68" rx="10"/>
+                <text x="64" y="52" class="t">Your cluster</text>
+                <text x="64" y="74" class="s">OpenTelemetry Collector · DaemonSet</text>
+                <g class="pods"><rect x="300" y="44" width="16" height="16" rx="3"/><rect x="322" y="44" width="16" height="16" rx="3"/><rect x="344" y="44" width="16" height="16" rx="3"/></g>
+              </g>
+              <g class="node n1">
+                <rect x="40" y="170" width="340" height="68" rx="10"/>
+                <text x="64" y="198" class="t">Argus</text>
+                <text x="64" y="220" class="s">OTLP receivers · alert engine</text>
+              </g>
+              <g class="node n2">
+                <rect x="40" y="316" width="340" height="68" rx="10"/>
+                <text x="64" y="344" class="t">ClickHouse</text>
+                <text x="64" y="366" class="s">metrics · logs · traces · 1m / 1h rollups</text>
+              </g>
+              <text x="210" y="430" class="foot" text-anchor="middle">Runs on your infrastructure. No data leaves it.</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. SIGNALS ============ -->
+    <section class="signals" id="signals" aria-labelledby="signals-title">
+      <h2 id="signals-title" class="section-title center reveal">Three signals.<br>One place to read them.</h2>
+      <div class="cards">
+        <article class="card reveal">
+          <div class="viz viz-metrics" aria-hidden="true">
+            <svg viewBox="0 0 280 120" preserveAspectRatio="none"><path pathLength="1" d="M0,90 C30,85 40,60 70,64 S110,96 140,70 S190,30 220,42 S260,58 280,36"/><path class="b" pathLength="1" d="M0,104 C40,100 60,92 90,96 S150,84 180,88 S240,74 280,78"/></svg>
+          </div>
+          <h3>Metrics</h3>
+          <p>Node, pod and container CPU, memory, disk and network, rolled up automatically. Browse them or write PromQL-style queries in Explore.</p>
+        </article>
+        <article class="card reveal">
+          <div class="viz viz-logs" aria-hidden="true">
+            <p><i>10:42:07</i> <b class="i">INFO</b> payments  request completed 200</p>
+            <p><i>10:42:08</i> <b class="w">WARN</b> checkout  retry 1/3 upstream timeout</p>
+            <p><i>10:42:08</i> <b class="i">INFO</b> payments  request completed 200</p>
+            <p><i>10:42:09</i> <b class="e">ERROR</b> checkout upstream unavailable</p>
+            <p><i>10:42:10</i> <b class="i">INFO</b> catalog   cache warm 1.2s</p>
+          </div>
+          <h3>Logs</h3>
+          <p>Search across services and namespaces, filter by severity, and turn any pattern into an alert when it crosses a threshold.</p>
+        </article>
+        <article class="card reveal">
+          <div class="viz viz-traces" aria-hidden="true">
+            <div class="span" style="--x:0;--w:100%"><span>GET /checkout</span></div>
+            <div class="span" style="--x:6%;--w:30%"><span>auth</span></div>
+            <div class="span" style="--x:38%;--w:44%"><span>payments</span></div>
+            <div class="span err" style="--x:46%;--w:30%"><span>bank-api</span></div>
+            <div class="span" style="--x:84%;--w:14%"><span>db</span></div>
+          </div>
+          <h3>Traces</h3>
+          <p>Follow a request across services with a service map and per-operation latency, scoped to the cluster it ran in.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 5. ALERTS: pinned, the card evolves ============ -->
+    <section class="stage stage-alerts" id="alerts" data-stage data-steps="3" aria-labelledby="alerts-title">
+      <div class="sticky">
+        <div class="split reverse">
+          <div class="alert-visual" aria-hidden="true">
+            <div class="alert-card">
+              <div class="alert-top">
+                <span class="sev"><em class="dot crit"></em>Critical</span>
+                <span class="state" data-state="firing">Firing</span>
+                <span class="state" data-state="resolved">Resolved</span>
+              </div>
+              <h4>Pod restart loop · checkout-api</h4>
+              <p class="meta">prod-eu-west · namespace shop · 6 restarts in 10 min</p>
+              <div class="memory">
+                <p class="memory-h">Seen before · 2 previous resolutions</p>
+                <p class="memory-b">“Memory limit too low after the v2.3 release. Raised limit to 512Mi.”</p>
+                <p class="memory-f">Resolved by the on-call engineer · 14 days ago</p>
+              </div>
+              <div class="resolved-note">Resolution saved. Next time, it shows up here.</div>
+            </div>
+          </div>
+          <div class="steps">
+            <h2 id="alerts-title" class="section-title">Alerts that<br>remember the fix.</h2>
+            <ol>
+              <li data-step="0"><b>It fires</b><span>Threshold rules run directly against your stored metrics and logs. Uptime checks raise their own alerts when an endpoint fails.</span></li>
+              <li data-step="1"><b>It remembers</b><span>When the same alert comes back, the notes from how it was resolved last time are right there on the alert.</span></li>
+              <li data-step="2"><b>It learns</b><span>Resolve it with a note, and the next person on call starts where you finished. Silence noisy alerts by fingerprint, title or severity.</span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6. CLUSTERS ============ -->
+    <section class="clusters" id="clusters" aria-labelledby="clusters-title">
+      <div class="split">
+        <div>
+          <h2 id="clusters-title" class="section-title reveal">Many clusters.<br>One at a time.</h2>
+          <p class="body reveal">Connect as many clusters as you run. Every page in Argus (metrics, logs, traces, pods and alerts) is scoped to the cluster you pick, and access is granted per cluster, so each team sees what it owns.</p>
+          <ul class="facts reveal">
+            <li><b>Per-cluster access</b><span>Role-based access with cluster-level permissions.</span></li>
+            <li><b>Self-registering</b><span>New clusters and nodes appear as soon as they send data.</span></li>
+            <li><b>Uptime built in</b><span>Synthetic HTTP checks with expected status and response time.</span></li>
+          </ul>
+        </div>
+        <div class="switcher reveal" aria-hidden="true">
+          <p class="switcher-h">Cluster</p>
+          <div class="opt on"><span>prod-eu-west</span><em>12 nodes</em></div>
+          <div class="opt"><span>prod-us-east</span><em>18 nodes</em></div>
+          <div class="opt"><span>staging</span><em>4 nodes</em></div>
+          <div class="opt"><span>dev-local</span><em>2 nodes</em></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7. OPEN ============ -->
+    <section class="open" aria-labelledby="open-title">
+      <h2 id="open-title" class="section-title center reveal">Built on standards<br>you already trust.</h2>
+      <div class="open-grid">
+        <div class="reveal"><b>OpenTelemetry</b><p>Standard OTLP over gRPC or HTTP. Bring the collectors and SDKs you already use.</p></div>
+        <div class="reveal"><b>ClickHouse</b><p>One columnar store for metrics, logs, traces and alerts. Fast to query, cheap to keep.</p></div>
+        <div class="reveal"><b>Your infrastructure</b><p>Docker Compose for a laptop, Helm charts for Kubernetes. No vendor in the data path.</p></div>
+      </div>
+    </section>
+
+    <!-- ============ 8. DEPLOY ============ -->
+    <section class="deploy" id="deploy" aria-labelledby="deploy-title">
+      <h2 id="deploy-title" class="section-title center reveal">Running in minutes.</h2>
+      <div class="terminals">
+        <div class="term reveal">
+          <div class="term-h"><span>Try it locally</span><button class="copy" data-copy="t1">Copy</button></div>
+          <pre id="t1"><code>docker compose up -d
+# Dashboard: http://localhost:3000</code></pre>
+        </div>
+        <div class="term reveal">
+          <div class="term-h"><span>Install on Kubernetes</span><button class="copy" data-copy="t2">Copy</button></div>
+          <pre id="t2"><code>helm install argus ./helm-chart/argus \
+  --namespace argus --create-namespace \
+  --set clickhouse.password=&lt;password&gt; \
+  --set backend.jwtSecret=&lt;secret&gt;</code></pre>
+        </div>
+        <div class="term reveal">
+          <div class="term-h"><span>Connect a cluster</span><button class="copy" data-copy="t3">Copy</button></div>
+          <pre id="t3"><code># first set ARGUS_OTLP_ENDPOINT
+# and CLUSTER_NAME in the manifests
+kubectl apply -f otel-collector/kubernetes/</code></pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="brand small"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3.2"/></svg>Argus</span>
+      <span>Self-hosted observability for Kubernetes.</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
